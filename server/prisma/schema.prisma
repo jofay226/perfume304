@@ -19,7 +19,7 @@ model Brand {
 }
 
 model Perfume {
-  id          String    @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   description String
   brandId     String

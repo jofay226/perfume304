@@ -18,6 +18,6 @@
     "esm": true,
     "experimentalSpecifierResolution": "node",
     "transpileOnly": true,
-    // "require": ["dotenv/config"]
+    "require": ["dotenv/config"]
   }
 }

@@ -1,4 +1,4 @@
-version: '3.9'
+# version: '3.9'
 
 services:
   client:
@@ -17,6 +17,7 @@ services:
     environment:
       PORT: 4000
       CHOKIDAR_USEPOLLING: "true"
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - "4000:4000"
     volumes:

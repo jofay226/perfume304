@@ -1,9 +1,20 @@
-const resolvers = {
+import { brandService } from "../../services/brand.services.ts";
+
+export const brandResolvers = {
   Mutation: {
-    createBrand: (_, args) => {
-        console.log(args);
+    createBrand: async (_, {params}: {params: {name: string}}) => {
+
+        console.log(params);
+        
+        const newBrand = await brandService.createBrand(params.name)
+        return newBrand
     }
   },
+  Query: {
+    getBrands: async () => {
+        return await brandService.getBrands()
+    }
+  }
 };
 
 

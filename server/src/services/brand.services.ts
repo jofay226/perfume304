@@ -9,5 +9,9 @@ export const brandService = {
         })
     
         return brand
+    },
+    getBrands: async () => {
+       const brands = await prisma.brand.findMany({})
+       return brands
     }
 }

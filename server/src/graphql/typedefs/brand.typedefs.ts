@@ -1,14 +1,18 @@
-const typeDefs = `
+export const brandTypeDefs = `
     input BrandInput {
         name: String!
     }
 
     type Brand {
        id: ID
-       name String 
+       name: String 
     }
 
     extend type Mutation {
         createBrand(params:BrandInput): Brand
+    }
+    
+    extend type Query {
+        getBrands: [Brand]
     }
 `;

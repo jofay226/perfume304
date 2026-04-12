@@ -1,34 +1,32 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+import { brandTypeDefs } from './graphql/typedefs/brand.typedefs.ts';
+import { brandResolvers } from './graphql/resolvers/brand.resolver.ts';
 
 
 
 
 const typeDefs = `
-  type Book {
-    title: String
-    author: String
-  }
+    type Query 
+    type Mutation 
 
-
-  type Query {
-    books: [Book]
-  }
+    ${brandTypeDefs}
 `;
 
 
 
 const resolvers = {
-  Query: {
-    books: () => books,
-  },
+    Query: {
+      ...brandResolvers.Query
+    },
+    Mutation: {
+      ...brandResolvers.Mutation
+    },
 };
 
 
 
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -36,10 +34,7 @@ const server = new ApolloServer({
 
 
 
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
+
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
 });

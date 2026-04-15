@@ -11,7 +11,12 @@ export const brandService = {
         return brand
     },
     getBrands: async () => {
-       const brands = await prisma.brand.findMany({})
+       const brands = await prisma.brand.findMany({
+        select: {
+            id: true,
+
+        }
+       })
        return brands
     }
 }

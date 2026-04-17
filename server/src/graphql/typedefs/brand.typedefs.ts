@@ -13,6 +13,6 @@ export const brandTypeDefs = `
     }
     
     extend type Query {
-        getBrands: [Brand]
+        getAllBrands: [Brand]
     }
 `;

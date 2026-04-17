@@ -17,14 +17,11 @@ function Page() {
   const router = useRouter();
   const [brandName, setBrandName] = useState("");
 
-  const [createBrandMutation, { loading, error, data }] = useMutation(
-    createBrand,
-    {
-      onCompleted: () => {
-        router.push("/");
-      },
+  const [createBrandMutation] = useMutation(createBrand, {
+    onCompleted: () => {
+      router.push("/");
     },
-  );
+  });
 
   const handleBrandName = () => {
     if (!brandName) {

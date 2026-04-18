@@ -45,8 +45,11 @@ const GET_ALL_BRANDS = gql`
 `;
 
 export default function Home() {
-  const { data, loading, error } = useQuery(GET_ALL_BRANDS);
-  console.log(data);
+  const {
+    data: brandsData,
+    loading: brandsLoading,
+    error,
+  } = useQuery(GET_ALL_BRANDS);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-neutral-900 text-black dark:text-white p-6 transition-colors">
@@ -92,17 +95,26 @@ export default function Home() {
         <div className="col-span-9 space-y-6">
           {/* BRAND CIRCLES */}
           <div className="bg-white dark:bg-neutral-800 p-4 rounded-2xl shadow-sm flex gap-4 overflow-x-auto">
-            {brands.map((b) => (
-              <div
-                key={b}
-                className="flex flex-col items-center cursor-pointer"
-              >
+            {brandsLoading ? (
+              <div className="flex flex-col items-center cursor-pointer animate-pulse">
                 <div className="w-16 h-16 rounded-full bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-sm font-medium">
-                  {b[0]}
+                  coming...
                 </div>
-                <span className="text-xs mt-2">{b}</span>
+                <span className="text-xs mt-2">coming...</span>
               </div>
-            ))}
+            ) : (
+              brandsData?.getAllBrands.map((b) => (
+                <div
+                  key={b.id}
+                  className="flex flex-col items-center cursor-pointer"
+                >
+                  <div className="w-16 h-16 rounded-full bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-sm font-medium">
+                    {b.name}
+                  </div>
+                  <span className="text-xs mt-2">{b.name}</span>
+                </div>
+              ))
+            )}
           </div>
 
           {/* CARDS */}

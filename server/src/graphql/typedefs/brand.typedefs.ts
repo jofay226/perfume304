@@ -8,8 +8,10 @@ export const brandTypeDefs = `
        name: String 
     }
 
+
     extend type Mutation {
         createBrand(params:BrandInput): Brand
+        deleteBrand(id: ID!): Brand
     }
     
     extend type Query {

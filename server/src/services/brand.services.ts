@@ -9,6 +9,13 @@ export const brandService = {
         })
         return brand
     },
-    getAllBrands: async () => await prisma.brand.findMany({})
+    getAllBrands: async () => await prisma.brand.findMany({}),
+    deleteBrand: async (brandId: string) => {
+        const deletedBrand = await prisma.brand.delete({
+            where: {id:brandId }
+        })
+
+        return deletedBrand
+    }
     
 }

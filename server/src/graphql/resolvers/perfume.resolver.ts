@@ -5,13 +5,12 @@ export const PerfumeResolvers = {
     
   },
   Mutation: {
-    createPerfume : async (_, args ) => {
-      console.log(args);
+    createPerfume : async (_: any, {input} ) => {
+      console.log(input.variants);
       
-      // const newPerfume = await perfumeService.createPerfume() 
-      // console.log(newPerfume);
+      const newPerfume = await perfumeService.createPerfume(input) 
 
-      return "success"
+      return newPerfume 
     }
   }
 };

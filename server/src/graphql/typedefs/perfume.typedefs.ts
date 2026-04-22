@@ -7,12 +7,12 @@ export const perfumeTypeDefs = `#graphql
   input VariantInput {
     price: Int
     size: Int 
-    concentrate: String
+    concentration: String
   }
 
   input PerfumeInput {
     name: String
-    decription: String
+    description: String
     brandId: ID
     variants: [VariantInput]
   }

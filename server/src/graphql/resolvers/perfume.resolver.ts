@@ -6,7 +6,6 @@ export const PerfumeResolvers = {
   },
   Mutation: {
     createPerfume : async (_: any, {input} ) => {
-      console.log(input.variants);
       
       const newPerfume = await perfumeService.createPerfume(input) 
 
@@ -14,3 +13,5 @@ export const PerfumeResolvers = {
     }
   }
 };
+
+

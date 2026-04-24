@@ -2,7 +2,7 @@
 import { gql } from "@apollo/client";
 import { useMutation, useQuery } from "@apollo/client/react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { GET_ALL_BRANDS } from "../page";
 
 const createBrand = gql`
@@ -13,8 +13,17 @@ const createBrand = gql`
     }
   }
 `;
+const CREATE_PERFUME = gql`
+  mutation CreatePerfume($input: PerfumeInput) {
+    createPerfume(input: $input) {
+      id
+      name
+    }
+  }
+`;
 
 function Page() {
+  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -27,10 +36,20 @@ function Page() {
   });
 
   const { data: brands } = useQuery(GET_ALL_BRANDS);
-  const [] = useMutation();
-
-  const router = useRouter();
   const [brandName, setBrandName] = useState("");
+
+  const [createPerfume] = useMutation(CREATE_PERFUME, {
+    onCompleted: () => {
+      router.push("/");
+    },
+  });
+  const createPerfumeHandler = () => {
+    createPerfume({
+      variables: {
+        input: form,
+      },
+    });
+  };
 
   const [createBrandMutation] = useMutation(createBrand, {
     onCompleted: () => {
@@ -62,7 +81,6 @@ function Page() {
       variants: [...prev.variants],
     }));
   };
-  console.log(form);
 
   return (
     <main>
@@ -197,7 +215,10 @@ function Page() {
 
             {/* BUTTON */}
 
-            <button className="w-full bg-blue-600 hover:bg-blue-700 transition p-3 rounded-xl font-medium">
+            <button
+              onClick={createPerfumeHandler}
+              className="w-full bg-blue-600 hover:bg-blue-700 transition p-3 rounded-xl font-medium"
+            >
               Create Perfume
             </button>
           </div>

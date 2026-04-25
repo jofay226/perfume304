@@ -35,6 +35,8 @@ function Page() {
     ],
   });
 
+  console.log(form);
+
   const { data: brands } = useQuery(GET_ALL_BRANDS);
   const [brandName, setBrandName] = useState("");
 
@@ -128,7 +130,7 @@ function Page() {
             {/* BRAND */}
 
             <select
-              onChange={formHandler}
+              onClick={formHandler}
               name="brandId"
               className="w-full p-3 rounded-xl bg-[#10141c] border border-[#262b36]"
             >

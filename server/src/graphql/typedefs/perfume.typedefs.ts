@@ -1,8 +1,5 @@
 export const perfumeTypeDefs = `#graphql
-  
-  type Query {
-    _empty: String
-  }
+
 
   input VariantInput {
     price: Int
@@ -20,6 +17,18 @@ export const perfumeTypeDefs = `#graphql
   type Perfume {
     id: ID 
     name: String
+  }
+
+
+  input PerfumeFilters {
+    size: Int 
+    brandId: String 
+    concentration: String
+  }
+
+    
+  type Query {
+    getPerfumes(input: PerfumeFilters): String
   }
 
   type Mutation {

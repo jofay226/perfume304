@@ -2,7 +2,7 @@
 
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const brands = ["All", "Dior", "Chanel", "Tom Ford", "Gucci"];
 
@@ -63,23 +63,29 @@ export const GET_ALL_PERFUMES = gql`
 
 export default function Home() {
   const [filters, setFilters] = useState({
-    size: null,
+    size: 50,
     concentration: null,
     brandId: null,
   });
 
-  const {
-    data: brandsData,
-    loading: brandsLoading,
-    error,
-  } = useQuery(GET_ALL_BRANDS);
+  const { data: brandsData, loading: brandsLoading } = useQuery(GET_ALL_BRANDS);
 
-  const { data: Perfumes } = useQuery(GET_ALL_PERFUMES, {
+  const { data: Perfumes, refetch } = useQuery(GET_ALL_PERFUMES, {
     variables: {
       input: filters,
     },
   });
-  console.log(Perfumes);
+
+  useEffect(() => {
+    refetch();
+  }, [filters.size, filters.concentration, filters.brandId, refetch]);
+
+  const filterHandler = (e) => {
+    const name = e.target.name;
+    const value = +e.target.value;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+    refetch();
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-neutral-900 text-black dark:text-white p-6 transition-colors">
@@ -91,18 +97,24 @@ export default function Home() {
           {/* Size */}
           <div>
             <p className="text-sm font-medium mb-2">Size</p>
-            <select className="w-full border dark:border-neutral-700 bg-transparent rounded-xl p-2 text-sm">
-              <option>All</option>
-              <option>50ml</option>
-              <option>100ml</option>
-              <option>150ml</option>
+            <select
+              onChange={filterHandler}
+              name="size"
+              className="w-full border dark:border-neutral-700 bg-transparent rounded-xl p-2 text-sm"
+            >
+              <option value={50}>50ml</option>
+              <option value={100}>100ml</option>
+              <option value={150}>150ml</option>
             </select>
           </div>
 
           {/* Brand */}
           <div>
             <p className="text-sm font-medium mb-2">Brand</p>
-            <select className="w-full border dark:border-neutral-700 bg-transparent rounded-xl p-2 text-sm">
+            <select
+              onClick={filterHandler}
+              className="w-full border dark:border-neutral-700 bg-transparent rounded-xl p-2 text-sm"
+            >
               {brands.map((b) => (
                 <option key={b}>{b}</option>
               ))}
@@ -112,11 +124,13 @@ export default function Home() {
           {/* Concentration */}
           <div>
             <p className="text-sm font-medium mb-2">Concentration</p>
-            <select className="w-full border dark:border-neutral-700 bg-transparent rounded-xl p-2 text-sm">
-              <option>All</option>
-              <option>Parfum</option>
-              <option>Eau de Parfum</option>
-              <option>Eau de Toilette</option>
+            <select
+              onClick={filterHandler}
+              className="w-full border dark:border-neutral-700 bg-transparent rounded-xl p-2 text-sm"
+            >
+              <option value={"EDT"}>Eau de Toilette</option>
+              <option value={"EDP"}>Eau de Parfum</option>
+              <option value={"PERFUME"}>Parfum</option>
             </select>
           </div>
         </div>
@@ -149,7 +163,7 @@ export default function Home() {
 
           {/* CARDS */}
           <div className="grid grid-cols-3 gap-6">
-            {perfumes.map((p) => (
+            {Perfumes?.getPerfumes.map((p) => (
               <div
                 key={p.id}
                 className="bg-white dark:bg-neutral-800 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition"
@@ -163,15 +177,15 @@ export default function Home() {
                 <div className="p-4 space-y-2">
                   <h3 className="font-semibold">{p.name}</h3>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {p.brand}
+                    {p.brandId}
                   </p>
 
                   <p className="text-xs text-gray-400">
-                    {p.size} • {p.concentration}
+                    {p.variant[0].size} ml • {p.variant[0].concentration}
                   </p>
 
                   <div className="flex justify-between items-center mt-3">
-                    <span className="font-bold">{p.price}</span>
+                    <span className="font-bold">{p.variant[0].price}$</span>
                     <button className="bg-black dark:bg-white dark:text-black text-white text-xs px-3 py-1 rounded-lg">
                       Buy
                     </button>

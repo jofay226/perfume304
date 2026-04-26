@@ -54,6 +54,7 @@ function Page() {
   };
 
   const [createBrandMutation] = useMutation(createBrand, {
+    refetchQueries: [{ query: GET_ALL_BRANDS }],
     onCompleted: () => {
       router.push("/");
     },

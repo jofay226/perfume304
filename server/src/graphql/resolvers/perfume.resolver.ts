@@ -5,7 +5,7 @@ export const PerfumeResolvers = {
     getPerfumes: async (_, {input}) => {
       const perfumes = await perfumeService.getPerfumes(input)
       console.log(perfumes);  
-      return "🚀🚀🚀🚀🚀"
+      return perfumes
     }
   },
   Mutation: {

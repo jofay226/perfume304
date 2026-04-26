@@ -25,6 +25,14 @@ export const perfumeService = {
                         ...(filters.concentration && {concentration: filters.concentration})
                     }
                 }
+            },
+            include: {
+                variant: {
+                    where: {
+                        ...(filters.size && {size: filters.size}),
+                        ...(filters.concentration && {concentration: filters.concentration})  
+                    }
+                }
             }
         })  
 

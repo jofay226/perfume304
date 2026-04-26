@@ -2,6 +2,7 @@
 
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
+import { useState } from "react";
 
 const brands = ["All", "Dior", "Chanel", "Tom Ford", "Gucci"];
 
@@ -44,12 +45,41 @@ export const GET_ALL_BRANDS = gql`
   }
 `;
 
+export const GET_ALL_PERFUMES = gql`
+  query GetPerfumes($input: PerfumeFilters) {
+    getPerfumes(input: $input) {
+      id
+      name
+      description
+      brandId
+      variant {
+        size
+        price
+        concentration
+      }
+    }
+  }
+`;
+
 export default function Home() {
+  const [filters, setFilters] = useState({
+    size: null,
+    concentration: null,
+    brandId: null,
+  });
+
   const {
     data: brandsData,
     loading: brandsLoading,
     error,
   } = useQuery(GET_ALL_BRANDS);
+
+  const { data: Perfumes } = useQuery(GET_ALL_PERFUMES, {
+    variables: {
+      input: filters,
+    },
+  });
+  console.log(Perfumes);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-neutral-900 text-black dark:text-white p-6 transition-colors">
